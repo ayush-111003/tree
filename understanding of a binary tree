@@ -1,0 +1,210 @@
+#include<bits/stdc++.h>
+using namespace std;
+// understanding of a binary tree
+
+struct node 
+{
+    int data;
+    node *lchild , *rchild;
+};
+
+struct node *create()
+{
+    int x = 0;
+    node *newnode = new node;
+    cout<<" Enter the data (-1 for no node ): "<<endl;
+    cin>>x;
+    if(x==-1)return 0;
+    else{
+        newnode->data=x;
+        cout<<" Enter the lchild of "<<x<<endl;
+        newnode->lchild=create();
+        cout<<" Enter thr rchild of "<<x<<endl;
+        newnode->rchild=create();
+    }
+    return newnode;
+}
+void preorder(node *p)
+{
+    
+    //using recursion
+    // p=root;
+    // if(p)
+    // {
+    //     cout<<p->data<<" ";
+    //     preorder(p->lchild);
+    //     preorder(p->rchild);
+    // }
+    //using iteration
+    stack<node *> st;
+    while (p || !st.empty())
+    {
+        if(p)
+    {
+        cout<<p->data<<endl;
+        st.push(p);
+        p=p->lchild;
+    }
+        else{
+        p=st.top();
+        st.pop();
+        p=p->rchild;
+        }
+    }
+    
+    
+}
+// void postorder(node*p)
+// {//using recursion
+//     // if(p)
+//     // {
+//     //     postorder(p->lchild);
+//     //     postorder(p->rchild);
+//     //     cout<<p->data<<" ";
+//     // }
+// //using iteration
+//     stack< long int> st;
+//     long int temp;
+//     while (p||!st.empty())
+//     {
+//         if(p)
+//         {
+//             st.push(p);
+//             p=p->lchild;
+//         }
+//         else
+//         {
+//             temp = st.top();
+//             st.pop();
+//             if(temp>0)
+//             {
+//                 st.push(-temp);
+//                 p=((node*)temp)->rchild;
+//             }
+//             else
+//             {
+//                 cout<<((node*)temp)->data<<endl;
+//                 p=NULL;
+//             }
+//         }
+//     }
+    
+// }
+void inorder(node *p)
+{  
+//using recursion
+    // if(p)
+    // {
+    //     inorder(p->lchild);
+    //     cout<<p->data<<" ";
+    //     inorder(p->rchild);
+    // }
+    //using iteration
+    stack<node *> st;
+    while (p || !st.empty())
+    {
+        if(p)
+    {
+        
+        st.push(p);
+        p=p->lchild;
+    }
+        else{
+        p=st.top();
+        st.pop();
+        cout<<p->data<<endl;
+        p=p->rchild;
+        }
+    }
+}
+void levelorder(node *p)
+{
+    queue<node*> q;
+    cout<<p->data<<endl;
+    q.push(p);
+    while (!q.empty())
+    {
+        p=q.front();
+        q.pop();
+        if(p->lchild)
+        {
+            cout<<p->lchild->data<<endl;
+            q.push(p->lchild);
+        }
+        if(p->rchild)
+        {
+            cout<<p->rchild->data<<endl;
+            q.push(p->rchild);
+        }
+    }
+    
+}
+int level_count(node *p)
+{//returning height +1 or level of a binary tree
+    int x,y;
+    if(p)
+    {
+        x=level_count(p->lchild);
+        y=level_count(p->rchild);
+        if(x>y)return x+1;
+        else return y+1;
+    }
+    return 0;
+}
+int count(node *p)
+{//returning no of nodes in a tree
+    int x,y;
+    if(p)
+    {
+        x=count(p->lchild);
+        y=count(p->rchild);
+        return x+y+1;
+    }
+    return 0;
+}
+int sum(node *p)
+{//returning sum of all nodes
+    int x,y;
+    if(p)
+    {
+        x=sum(p->lchild);
+        y=sum(p->rchild);
+        return x+y+p->data;
+    }
+    return 0;
+}
+int leaf_nodes(node *p)
+{//returning no of leaf nodes
+    int x,y;
+    if(p)
+    {
+        x=leaf_nodes(p->lchild);
+        y=leaf_nodes(p->rchild);
+        if(p->lchild==NULL && p->rchild==NULL )return x+y+1;
+        else return x+y;
+    }
+    return 0;
+}
+int deg_2_nodes(node *p)
+{//returning all nodes of degree 2
+    int x,y;
+    if(p)
+    {
+        x=deg_2_nodes(p->lchild);
+        y=deg_2_nodes(p->rchild);
+        if(p->lchild && p->rchild)return x+y+1;
+        else return x+y;
+    }
+    return 0;
+}
+int main()
+{
+    
+    node *root=0;
+    root=create();
+    levelorder(root);
+    cout<<deg_2_nodes(root)<<endl;
+    // postorder(root);cout<<endl;
+    // inorder(root);
+   return 0 ;
+}
